@@ -1,5 +1,4 @@
 //requireing
-
 const express = require('express');
 const mongoose = require('mongoose');
 
@@ -11,8 +10,13 @@ const port = process.env.PORT || 8000
 
 
 // DB config
+const connection_url = 'mongodb+srv://admin:7kRKsplLoa5X7JhB@cluster0.ibs7n.mongodb.net/messengerdb?retryWrites=true&w=majority'
 
-
+mongoose.connect(connection_url, {
+    useCreateIndex: true,
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+})
 
 // ????
 
