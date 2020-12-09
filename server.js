@@ -2,11 +2,21 @@
 const bodyParser = require('body-parser')
 const express = require('express');
 const mongoose = require('mongoose');
-const Message = require('./dbMessages')
+const Message = require('./dbMessages');
+const Pusher = require("pusher");
 //app config
 
 const app = express();
 const port = process.env.PORT || 8000
+
+const pusher = new Pusher({
+    appId: "1120195",
+    key: "e49696d1456791ae2abf",
+    secret: "b350200996068da949af",
+    cluster: "us3",
+    useTLS: true
+});
+  
 //middleware
 
 app.use(bodyParser.json());
@@ -24,6 +34,19 @@ mongoose.connect(connection_url, {
 });
 
 // ????
+
+const db = mongoose.connection
+
+db.once('open', () => {
+    console.log("DB connected");
+
+    const msgCollection = db.collection('messages');
+    const changeStream = msgCollection.watch();
+
+    changeStream.on("change", (change) => {
+        console.log(change);
+    })
+})
 
 
 // api routes
