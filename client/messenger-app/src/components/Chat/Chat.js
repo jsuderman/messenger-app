@@ -19,7 +19,7 @@ function Chat({ messages }) {
         await axios.post("/messages/new", {
             message: input,
             name: "demo",
-            timestamp: "just now",
+            timestamp: "now",
             received: false,
         });
 
@@ -58,7 +58,7 @@ function Chat({ messages }) {
             </div>
 
             <div className="chat__body">
-                {messages.map((message) => (
+                {messages.map((message) => ( 
 
                 
                 <p className={`chat__message ${message.received && 'chat__reciever'}`}>
@@ -66,7 +66,7 @@ function Chat({ messages }) {
 
                     {message.message}
 
-                    <span className="chat__timestamp">{message.timestamp}</span>
+                    <span className="chat__timestamp">{new Date().toUTCString()}</span>
                     
                 </p>
                 ))}

@@ -1,15 +1,18 @@
-import { Avatar } from '@material-ui/core';
 import React from 'react';
 import "./SidebarChat.css";
+import axios from "../../axios";
+import { Avatar } from '@material-ui/core';
 
 
-function SidebarChat({ addNewChat }) {
+function SidebarChat({ id, name, addNewChat }) {
 
         const createChat = () => {
             const roomName = prompt("please enter name of chat");
 
             if (roomName) {
-                // do something in here in db
+                axios.post("/rooms/new", {
+                    name: roomName
+                })
             }
         };
 
@@ -24,8 +27,8 @@ function SidebarChat({ addNewChat }) {
                 alt="random guy avatar"
             />
             <div className='sidebarChat__header'>
-                <h2>John Q</h2>
-                <p>whats up man?</p>
+                <h2>{name}</h2>
+                <p>last message...</p>
             </div>
         </div>
     ): (
