@@ -4,8 +4,8 @@ const express = require('express');
 const mongoose = require('mongoose');
 const Message = require('./dbMessages');
 const Pusher = require("pusher");
-//app config
 
+//app config
 const app = express();
 const port = process.env.PORT || 8000
 
@@ -18,7 +18,6 @@ const pusher = new Pusher({
 });
   
 //middleware
-
 app.use(bodyParser.json());
 app.use(express.json());
 
@@ -33,8 +32,7 @@ mongoose.connect(connection_url, {
     
 });
 
-// ????
-
+// Pusher
 const db = mongoose.connection
 
 db.once('open', () => {
@@ -45,12 +43,23 @@ db.once('open', () => {
 
     changeStream.on("change", (change) => {
         console.log(change);
-    })
-})
+
+        if (change.operationType === "insert") {
+            const messageDetails = change.fullDocument;
+            pusher.trigger("messages", "inserted",
+                {
+                    name: messageDetails.user,
+                    message: messageDetails.message,
+                }
+            );
+        } else {
+            console.log("error triggering pusher")
+        }
+    });
+});
 
 
 // api routes
-
 app.get('/', (req, res) => res.status(200).send('Hello world'));
 
 app.get('/messages/sync', (req, res) => {
@@ -75,5 +84,5 @@ app.post('/messages/new', (req, res) => {
     })
 })
 
-// ;listener
+// listener
 app.listen(port, () => console.log(`listening on localhost:${port}`))
