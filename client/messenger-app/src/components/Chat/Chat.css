@@ -25,6 +25,12 @@
     color: grey
 }
 
+.chat__headerRight {
+    display: flex;
+    justify-content: space-between;
+    min-width: 100px;
+}
+
 .chat__body {
     flex: 1;
     /* background-image: url(https://wallpaperaccess.com/full/251618.jpg);
