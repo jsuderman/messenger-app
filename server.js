@@ -4,6 +4,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const Message = require('./dbMessages');
 const Pusher = require("pusher");
+const cors = require("cors");
 
 //app config
 const app = express();
@@ -19,12 +20,13 @@ const pusher = new Pusher({
   
 //middleware
 app.use(bodyParser.json());
+app.use(cors());
 app.use(express.json());
-app.use((req, res, next) => {
-    res.setHeader("Access-Contorl-Allow_Origin", "*");
-    res.setHeader("Access-Contorl-Allow_Headers", "*");
-    next();
-})
+// app.use((req, res, next) => {
+//     res.setHeader("Access-Contorl-Allow_Origin", "*");
+//     res.setHeader("Access-Contorl-Allow_Headers", "*");
+//     next();
+// })
 
 
 // DB config
@@ -55,6 +57,8 @@ db.once('open', () => {
                 {
                     name: messageDetails.name,
                     message: messageDetails.message,
+                    timestamp: messageDetails.timestamp,
+                    received: messageDetails.received
                 }
             );
         } else {
