@@ -20,6 +20,11 @@ const pusher = new Pusher({
 //middleware
 app.use(bodyParser.json());
 app.use(express.json());
+app.use((req, res, next) => {
+    res.setHeader("Access-Contorl-Allow_Origin", "*");
+    res.setHeader("Access-Contorl-Allow_Headers", "*");
+    next();
+})
 
 
 // DB config
@@ -48,7 +53,7 @@ db.once('open', () => {
             const messageDetails = change.fullDocument;
             pusher.trigger("messages", "inserted",
                 {
-                    name: messageDetails.user,
+                    name: messageDetails.name,
                     message: messageDetails.message,
                 }
             );
