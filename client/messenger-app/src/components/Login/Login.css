@@ -51,3 +51,8 @@
     margin-top: 10px;
     background-color: gold;
 }
+
+.login__google {
+    margin-bottom: 15px;
+    background-color: maroon;
+}
