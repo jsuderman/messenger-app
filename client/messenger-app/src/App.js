@@ -1,12 +1,14 @@
 import './App.css';
 import Sidebar from "./components/Sidebar/Sidebar";
 import Chat from "./components/Chat/Chat";
+import Login from "./components/Login/Login"
 import Pusher from "pusher-js";
 import React, { useEffect, useState } from "react";
 import axios from "./axios";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 function App() {
+  const [user, setUser] = useState(null);
   const [messages, setMessages] = useState([]);
 
   useEffect(() => {
@@ -38,7 +40,10 @@ function App() {
 
   return (
     <div className="app">
-      <div className="app__body">
+      {!user ? (
+        <Login />
+      ):  (
+        <div className="app__body">
 
         <Router>
         <Sidebar />
@@ -62,6 +67,8 @@ function App() {
         </Router>
 
       </div>
+      )}
+      
     </div>
   );
 }
