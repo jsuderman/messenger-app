@@ -1,5 +1,6 @@
 import { Avatar, IconButton } from '@material-ui/core';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useParams } from "react-router-dom";
 import './Chat.css';
 import SearchIcon from '@material-ui/icons/Search';
 import AttachFileIcon from '@material-ui/icons/AttachFile';
@@ -7,11 +8,23 @@ import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import InsertEmoticonIcon from '@material-ui/icons/InsertEmoticon';
 // import SelectInput from '@material-ui/core/Select/SelectInput';
 import MicIcon from '@material-ui/icons/Mic';
-import axios from "../../axios"
+import axios from "../../axios";
 
-function Chat({ messages }) {
+function Chat({ name, messages }) {
 
     const [input, setInput] = useState("")
+    const { roomId } = useParams();
+    const [roomName, setRoomName] = useState("");
+
+    useEffect(() => {
+        if (roomId) {
+            axios.get("/rooms/sync")
+            .then(response => {
+                console.log(response.data);
+                setRoomName(response.data.name)
+            })
+        }
+    }, [roomId])
 
     const sendMessage = async (e) => {
         e.preventDefault();
@@ -37,7 +50,7 @@ function Chat({ messages }) {
                 />
 
                 <div className="chat__headerInfo">
-                    <h3>room name</h3>
+                    <h3>{roomName}</h3>
                     <p>last seen at ...</p>
                 </div>
 

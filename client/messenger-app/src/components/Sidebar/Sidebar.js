@@ -9,7 +9,7 @@ import SidebarChat from '../SidebarChat/SidebarChat';
 import axios from "../../axios";
 import Pusher from "pusher-js";
 
-function Sidebar() {
+function Sidebar(room) {
     const [rooms, setRooms] = useState([]);
 
     useEffect(() => {
@@ -71,7 +71,7 @@ function Sidebar() {
             <div className="sidebar__chats">
                 <SidebarChat addNewChat />
                 {rooms.map(room => (
-                    <SidebarChat key={room.id} id={room.id}
+                    <SidebarChat key={room._id} id={room._id}
                     name={room.name}
                     />
                 ))}
