@@ -26,4 +26,8 @@
     margin-left: 1vw;
 }
 
+a {
+    text-decoration: none !important;
+    color: black;
+}
 

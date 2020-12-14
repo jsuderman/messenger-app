@@ -9,13 +9,13 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { useStateValue } from './StateProvider';
 
 function App() {
-  
+
   const [{ user }, dispatch] = useStateValue();
   const [messages, setMessages] = useState([]);
 
   useEffect(() => {
     axios.get('/messages/sync').then(response => {
-      console.log(response.data);
+      // console.log(response.data);
       setMessages(response.data);
     });
   }, []);
@@ -38,39 +38,33 @@ function App() {
 
   }, [messages]);
 
-  console.log(messages);
+  // console.log(messages);
 
   return (
     <div className="app">
       {!user ? (
         <Login />
-      ):  (
-        <div className="app__body">
+      ) : (
+          <div className="app__body">
 
-        <Router>
-        <Sidebar />
-        <Chat messages={messages} />
-          <Switch>
-            
-            
-           
-
-            <Route path="/">
+            <Router>
+            <Sidebar />
+              <Switch>
               
-            </Route>
+                <Route path="/">
+                  <Chat messages={messages} />
+                </Route>
 
-            <Route path="/rooms/:roomId">
-              
-            </Route>
+                <Route path="/rooms/:roomId">
+                  <Chat messages={messages} />
+                </Route>
 
-            
-            
-          </Switch>
-        </Router>
+              </Switch>
+            </Router>
 
-      </div>
-      )}
-      
+          </div>
+        )}
+
     </div>
   );
 }

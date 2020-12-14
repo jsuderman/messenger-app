@@ -10,44 +10,45 @@ import axios from "../../axios";
 import Pusher from "pusher-js";
 import { useStateValue } from '../../StateProvider';
 
-function Sidebar(room) {
+function Sidebar() {
     const [rooms, setRooms] = useState([]);
     const [{ user }, dispatch] = useStateValue();
 
     useEffect(() => {
-        axios.get('/rooms/sync').then(response => {
-          console.log(response.data);
-          setRooms(response.data);
-        });
+        axios.get('/rooms/sync')
+            .then(response => {
+                // console.log(response.data);
+                setRooms(response.data);
+            });
     }, []);
 
     useEffect(() => {
         const pusher = new Pusher('e49696d1456791ae2abf', {
-          cluster: 'us3'
+            cluster: 'us3'
         });
-    
+
         const channel = pusher.subscribe('rooms');
-        channel.bind('inserted', function(data) {
-          // alert(JSON.stringify(data));
-          setRooms([...rooms, data])
+        channel.bind('inserted', function (data) {
+            // alert(JSON.stringify(data));
+            setRooms([...rooms, data])
         });
-    
+
         return () => {
-          channel.unbind_all();
-          channel.unsubscribe();
+            channel.unbind_all();
+            channel.unsubscribe();
         }
-    
-      }, [rooms]);
-    
-      console.log(rooms);
-  
+
+    }, [rooms]);
+
+    // console.log(rooms);
+
     return (
         <div className="sidebar">
 
             <div className="sidebar__header">
-                <Avatar 
-                src={user?.photoURL} /> 
-                
+                <Avatar
+                    src={user?.photoURL} />
+
                 <div className="sidebar__headerRight">
                     <IconButton>
                         <DonutSmallIcon />
@@ -74,7 +75,7 @@ function Sidebar(room) {
                 <SidebarChat addNewChat />
                 {rooms.map(room => (
                     <SidebarChat key={room._id} id={room._id}
-                    name={room.name}
+                        name={room.name}
                     />
                 ))}
 

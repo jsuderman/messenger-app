@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import "./SidebarChat.css";
 import axios from "../../axios";
 import { Avatar } from '@material-ui/core';
@@ -18,6 +18,14 @@ function SidebarChat({ id, name, addNewChat, room }) {
         }
     };
 
+    useEffect(() => {
+        if (id) {
+            axios.get("/messages/sync")
+            .then(response => {
+                console.log(response)
+            })
+        }
+    }, [id])
 
 
     return !addNewChat ? (
